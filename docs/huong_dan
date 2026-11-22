@@ -1,0 +1,31 @@
+# Hướng dẫn phối hợp làm việc FE & BE
+
+## 1. Mô hình kiến trúc
+- Dự án tách biệt **Backend (`BE/`)** và **Frontend (`FE/`)** dưới khung điều hướng chung `FE/layout.php`.
+- **BE** xử lý kết nối MySQL (`BE/db.php`), nhận tham số (`$_GET`, `$_POST`, `$_SESSION`), chạy câu lệnh `prepared statement` và chuẩn bị sẵn các biến/mảng dữ liệu hoặc thông báo trạng thái.
+- **FE** (`FE/pages/<ten-trang>.php`) `require_once` file dữ liệu tương ứng trong `BE/`, render HTML bằng vòng lặp PHP, thoát ký tự an toàn bằng `htmlspecialchars(...)`, đồng thời tách riêng **CSS** (`FE/assets/css/<ten-trang>.css`) và **JS** (`FE/assets/js/<ten-trang>.js`) rồi nhúng vào trang.
+- Không viết câu lệnh SQL trong `FE/pages/` và không trộn lẫn HTML/CSS vào file xử lý dữ liệu trong `BE/`.
+
+## 2. Phân công nhiệm vụ
+
+### Backend (`BE/`)
+- Kết nối CSDL qua `$conn` từ `BE/db.php` và dùng `prepare()` / `bind_param()` cho các truy vấn có tham số người dùng.
+- Kiểm tra dữ liệu đầu vào, ép kiểu (`intval`, `trim`) và kiểm tra session/quyền khi có thao tác ghi/cập nhật/xóa.
+- Trả ra các biến dữ liệu rõ ràng (ví dụ `$productList`, `$categories`) cùng trạng thái/thông báo (`$statusMessage`, `$isError`) để FE hiển thị.
+
+### Frontend (`FE/`)
+- Dựng giao diện trang trong `FE/pages/<ten-trang>.php`, nhúng file dữ liệu ở `BE/` và dùng `htmlspecialchars()` trước khi in dữ liệu động.
+- Tách CSS riêng vào `FE/assets/css/<ten-trang>.css` và nhúng bằng `<link rel="stylesheet" href="./assets/css/<ten-trang>.css">`.
+- Tách JS riêng vào `FE/assets/js/<ten-trang>.js` và nhúng bằng `<script src="./assets/js/<ten-trang>.js"></script>` để xử lý tương tác trên trình duyệt (kiểm tra form, nút reset, xác nhận, ẩn/hiện...).
+
+## 3. Quy ước đặt tên
+- **File & thư mục**: `kebab-case` (ví dụ: `home.php`, `home-data.php`, `home.css`, `home.js`, `product-detail.php`).
+- **Biến & hàm**: `camelCase` (ví dụ: `$productList`, `$searchKeyword`, `$categoryId`, `formatTransactionLabel()`).
+- **Class**: `PascalCase` (ví dụ: `ProductService`, `OrderController`).
+- **Bảng & cột CSDL**: `snake_case` (ví dụ: `categories`, `products`, `category_id`, `image_url`, `condition_percent`, `transaction_type`).
+
+## 4. Quy trình thêm chức năng mới
+1. Thống nhất tên trang/chức năng theo `kebab-case` và tên biến dữ liệu chung giữa BE và FE.
+2. Tạo nhánh mới từ `develop` trên Git, làm xong thì đẩy lên và gộp về `develop`.
+3. BE tạo file xử lý dữ liệu trong `BE/` và kiểm tra truy vấn/biến trả về.
+4. FE tạo `FE/pages/<ten-trang>.php`, `FE/assets/css/<ten-trang>.css`, `FE/assets/js/<ten-trang>.js`, đăng ký route trong `layout.php` (nếu có) và kiểm tra giao diện thực tế.

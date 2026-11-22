@@ -3,7 +3,7 @@
 $host = 'localhost';
 $username = 'root';
 $password = '';
-$database = 'smart_trade'; // Tên database theo file csdl.sql của nhóm
+$database = 'cs403'; // Tên database theo file csdl.sql của nhóm
 
 $conn = new mysqli($host, $username, $password, $database);
 
