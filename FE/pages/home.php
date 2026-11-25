@@ -36,15 +36,22 @@ require_once __DIR__ . '/../../BE/home-data.php';
                 $imgSrc = !empty($product['image_url'])
                     ? htmlspecialchars($product['image_url'])
                     : './assets/image/image.png';
+                $detailUrl = e(page_url('product-detail', ['id' => $product['id']]));
                 ?>
                 <article class="product-card">
-                    <img
-                        src="<?php echo $imgSrc; ?>"
-                        alt="<?php echo htmlspecialchars($product['title']); ?>"
-                        class="product-image"
-                    >
+                    <a href="<?php echo $detailUrl; ?>">
+                        <img
+                            src="<?php echo $imgSrc; ?>"
+                            alt="<?php echo htmlspecialchars($product['title']); ?>"
+                            class="product-image"
+                        >
+                    </a>
                     <div class="product-body">
-                        <h2 class="product-title"><?php echo htmlspecialchars($product['title']); ?></h2>
+                        <h2 class="product-title">
+                            <a href="<?php echo $detailUrl; ?>">
+                                <?php echo htmlspecialchars($product['title']); ?>
+                            </a>
+                        </h2>
                         <p class="product-price"><?php echo number_format((float)$product['price'], 0, ',', '.'); ?> đ</p>
                         <p class="product-desc"><?php echo htmlspecialchars($product['description'] ?? ''); ?></p>
                     </div>
