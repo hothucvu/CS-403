@@ -3,8 +3,10 @@ ob_start();
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-require_once __DIR__ . '/includes/helpers.php';   // <-- thêm dòng này
-...
+require_once __DIR__ . '/includes/helpers.php'; 
+$requestedPage = isset($_GET['page']) ? strtolower(trim($_GET['page'])) : 'home';
+$requestedPage = preg_replace('/[^a-z0-9-]/', '', $requestedPage);  
+
 $routes = [
     'home'           => ['file' => 'pages/home.php',           'access' => 'public'],
     'product-detail' => ['file' => 'pages/product-detail.php', 'access' => 'public'],
