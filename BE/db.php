@@ -3,7 +3,7 @@
 $host = 'localhost';
 $username = 'root';
 $password = '';
-$database = 'cs403'; // Tên database theo file csdl.sql của nhóm
+$database = 'cs403'; // Tên database theo fi
 
 $conn = new mysqli($host, $username, $password, $database);
 
@@ -12,5 +12,5 @@ if ($conn->connect_error) {
     die("Kết nối cơ sở dữ liệu thất bại: " . $conn->connect_error);
 }
 // Thiết lập font tiếng Việt
-$conn->set_charset("utf8");
+$conn->set_charset("utf8mb4");
 ?>

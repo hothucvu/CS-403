@@ -1,3 +1,4 @@
+
 <?php
 require_once __DIR__ . '/../../BE/home-data.php';
 ?>
@@ -37,16 +38,61 @@ require_once __DIR__ . '/../../BE/home-data.php';
                     ? htmlspecialchars($product['image_url'])
                     : './assets/image/image.png';
                 ?>
+
                 <article class="product-card">
                     <img
                         src="<?php echo $imgSrc; ?>"
                         alt="<?php echo htmlspecialchars($product['title']); ?>"
                         class="product-image"
                     >
+
                     <div class="product-body">
-                        <h2 class="product-title"><?php echo htmlspecialchars($product['title']); ?></h2>
-                        <p class="product-price"><?php echo number_format((float)$product['price'], 0, ',', '.'); ?> đ</p>
-                        <p class="product-desc"><?php echo htmlspecialchars($product['description'] ?? ''); ?></p>
+                        <h2 class="product-title">
+                            <?php echo htmlspecialchars($product['title']); ?>
+                        </h2>
+
+                        <p class="product-price">
+                            <?php echo number_format((float)$product['price'], 0, ',', '.'); ?> đ
+                        </p>
+
+                        <p class="product-desc">
+                            <?php echo htmlspecialchars($product['description'] ?? ''); ?>
+                        </p>
+
+                        <!-- THÊM SẢN PHẨM VÀO GIỎ HÀNG -->
+                        <?php if (isset($_SESSION['user_id'])): ?>
+
+                            <form method="POST" action="layout.php?page=cart">
+                                <input
+                                    type="hidden"
+                                    name="csrf_token"
+                                    value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"
+                                >
+
+                                <input
+                                    type="hidden"
+                                    name="cart_action"
+                                    value="add"
+                                >
+
+                                <input
+                                    type="hidden"
+                                    name="product_id"
+                                    value="<?php echo (int)$product['id']; ?>"
+                                >
+
+                                <button type="submit" class="btn-add-cart">
+                                    🛒 Thêm vào giỏ hàng
+                                </button>
+                            </form>
+
+                        <?php else: ?>
+
+                            <a href="layout.php?page=login" class="btn-add-cart">
+                                Đăng nhập để mua
+                            </a>
+
+                        <?php endif; ?>
                     </div>
                 </article>
             <?php endforeach; ?>

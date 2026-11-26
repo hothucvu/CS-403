@@ -27,7 +27,7 @@ require_once __DIR__ . '/../../BE/login-data.php';
 
             <label>Email</label>
             <input type="email"
-                   name="email"
+                   name="email" 
                    placeholder="Nhập email"
                    required>
 
