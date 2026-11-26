@@ -34,12 +34,12 @@ $typeLabels = ['sell' => 'Bán', 'barter' => 'Trao đổi', 'both' => 'Bán ho�
         <a href="<?php echo e(page_url('home')); ?>">&larr; Về danh sách sản phẩm</a>
     </section>
 <?php else: ?>
-    <?php $imgSrc = !empty($product['image_url']) ? $product['image_url'] : './assets/image/image.png'; ?>
+    
     <a class="detail-back" href="<?php echo e(page_url('home')); ?>">&larr; Quay lại</a>
 
     <section class="detail-wrap">
         <div class="detail-image">
-            <img src="<?php echo e($imgSrc); ?>" alt="<?php echo e($product['title']); ?>">
+            <img src="<?php echo "./assets/image/" . $product['image_url']; ?>" alt="<?php echo e($product['title']); ?>">
         </div>
 
         <div class="detail-info">
