@@ -33,15 +33,12 @@ require_once __DIR__ . '/../../BE/home-data.php';
         <div class="product-grid">
             <?php foreach ($productList as $product): ?>
                 <?php
-                $imgSrc = !empty($product['image_url'])
-                    ? htmlspecialchars($product['image_url'])
-                    : './assets/image/image.png';
                 $detailUrl = e(page_url('product-detail', ['id' => $product['id']]));
                 ?>
                 <article class="product-card">
                     <a href="<?php echo $detailUrl; ?>">
                         <img
-                            src="<?php echo $imgSrc; ?>"
+                            src="<?php echo "./assets/images/" . $product['image_url']; ?>"
                             alt="<?php echo htmlspecialchars($product['title']); ?>"
                             class="product-image"
                         >
