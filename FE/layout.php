@@ -92,12 +92,13 @@ if (isset($routes[$requestedPage])) {
     }
 }
 
-// Xử lý giỏ hàng trước khi xuất HTML
+
+ // Xử lý giỏ hàng trước khi xuất HTML
 if ($pageToLoad === 'pages/cart.php') {
     require_once __DIR__ . '/../BE/cart-data.php';
 }
 
-// Xử lý Barter trước khi xuất HTML
+// Xử lý trao đổi Barter trước khi xuất HTML
 if ($pageToLoad === 'pages/barter.php') {
     require_once __DIR__ . '/../BE/barter-data.php';
 }

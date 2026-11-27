@@ -1,0 +1,24 @@
+BẢN SỬA CS403: GIAO DIỆN VÀ GIỎ HÀNG
+
+Đã kiểm tra CS-403.rar của bạn. Các lỗi chính:
+- FE/cart.php đặt sai thư mục, trong khi FE/layout.php yêu cầu FE/pages/cart.php.
+- FE/header.php đang chứa hàm hỗ trợ (không chứa HTML), dẫn đến mất toàn bộ header/khung giao diện.
+- FE/footer.php, FE/assets/css/style.css, FE/assets/css/cart.css rỗng.
+- FE/pages/not-found.php và FE/pages/register.php rỗng nên các trang này không hiển thị.
+- BE/cart-data.php đã có thao tác thêm/xóa và tính tổng, không cần thay đổi.
+
+CÁCH CÀI:
+1. Sao lưu thư mục CS-403 đang làm việc, nhất là các file đã sửa bằng tay.
+2. Giải nén ZIP này. Copy THƯ MỤC FE của bản ZIP vào C:\laragon\www\CS-403\FE\ và chọn ghi đè khi được hỏi.
+3. Đừng chép đè BE/db.php, BE/login-data.php, FE/pages/login.php hoặc FE/pages/home.php (bản sửa này không chứa chúng).
+4. Đảm bảo FE/includes/helpers.php đã tồn tại (bạn vừa tạo và được giữ nguyên).
+5. Mở Laragon (Apache cổng 8080, MySQL cổng 3306).
+6. Truy cập http://localhost:8080/CS-403/FE/layout.php?page=home
+7. Đăng nhập, rồi truy cập http://localhost:8080/CS-403/FE/layout.php?page=cart
+
+Nếu trang giỏ hàng đưa bạn về đăng nhập thì đây là điều đúng nếu chưa đăng nhập.
+Trang đăng ký được bổ sung giao diện cho file đăng ký đang rỗng.
+Nếu trang chủ báo 'Chưa có sản phẩm nào' thì dữ liệu bảng products đang trống trong database kết nối ở BE/db.php.
+Lưu ý: csdl.sql trong bản RAR còn lỗi cú pháp 'INT INT' tại offered_product_id và requested_product_id (không sửa trong bản vá để tránh ảnh hưởng DB đang dùng).
+Các trang 'create-product' và 'product-detail' chưa có trong bản RAR.
+Chưa kiểm thử trực tiếp trên MySQL của máy bạn. Bộ file đã được kiểm tra cú pháp PHP.
