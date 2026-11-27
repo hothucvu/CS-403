@@ -1,0 +1,197 @@
+{
+  "info": {
+    "_postman_id": "5d294e1a-10fe-4d2f-8a3d-9d012a3f4a18",
+    "name": "CS403 ReUse – Backend Bao (MVP)",
+    "description": "Public API chỉ đọc; Checkout cần cookie phiên và CSRF từ trình duyệt. Chỉ thử trên môi trường local.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080/CS-403"
+    },
+    {
+      "key": "product_id",
+      "value": "1"
+    },
+    {
+      "key": "csrf_token",
+      "value": "PASTE_FROM_BROWSER_SESSION"
+    }
+  ],
+  "item": [
+    {
+      "name": "Danh mục",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/BE/api/categories.php",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "BE",
+            "api",
+            "categories.php"
+          ],
+          "query": []
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Danh sách sản phẩm",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/BE/api/products.php?page=1&per_page=12&sort=newest",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "BE",
+            "api",
+            "products.php"
+          ],
+          "query": [
+            {
+              "key": "page",
+              "value": "1"
+            },
+            {
+              "key": "per_page",
+              "value": "12"
+            },
+            {
+              "key": "sort",
+              "value": "newest"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Chi tiết sản phẩm",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/BE/api/product.php?id={{product_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "BE",
+            "api",
+            "product.php"
+          ],
+          "query": [
+            {
+              "key": "id",
+              "value": "{{product_id}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Gợi ý giá",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/BE/api/price-suggest.php?product_id={{product_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "BE",
+            "api",
+            "price-suggest.php"
+          ],
+          "query": [
+            {
+              "key": "product_id",
+              "value": "{{product_id}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Barter matching",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{base_url}}/BE/api/barter-matches.php?product_id={{product_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "BE",
+            "api",
+            "barter-matches.php"
+          ],
+          "query": [
+            {
+              "key": "product_id",
+              "value": "{{product_id}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Checkout COD (cần PHP session cookie)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/x-www-form-urlencoded"
+          }
+        ],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": [
+            {
+              "key": "csrf_token",
+              "value": "{{csrf_token}}"
+            },
+            {
+              "key": "shipping_address",
+              "value": "123 Đường A, Thành phố Đà Nẵng"
+            },
+            {
+              "key": "payment_method",
+              "value": "COD"
+            }
+          ]
+        },
+        "url": "{{base_url}}/FE/layout.php?page=checkout",
+        "description": "Phải dùng đúng cookie phiên đăng nhập của trình duyệt và csrf_token trong session; POST sẽ tạo đơn thật trong database demo."
+      },
+      "response": []
+    },
+    {
+      "name": "Đơn hàng của tôi (cần đăng nhập)",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/BE/api/orders.php",
+        "description": "Cần PHPSESSID hợp lệ trong Postman Cookie Manager và tài khoản đã đăng nhập. Chỉ xem đơn thuộc người dùng."
+      },
+      "response": []
+    },
+    {
+      "name": "Chi tiết đơn của tôi (cần đăng nhập)",
+      "request": {
+        "method": "GET",
+        "url": "{{base_url}}/BE/api/order-detail.php?id=1",
+        "description": "Cần PHPSESSID hợp lệ trong Postman Cookie Manager và tài khoản đã đăng nhập. Chỉ xem đơn thuộc người dùng."
+      },
+      "response": []
+    }
+  ]
+}

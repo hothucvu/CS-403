@@ -84,8 +84,8 @@ CREATE TABLE IF NOT EXISTS barter_requests (
     id INT AUTO_INCREMENT PRIMARY KEY,
     sender_id INT NOT NULL COMMENT 'Người chủ động đề nghị đổi',
     receiver_id INT NOT NULL COMMENT 'Người sở hữu món đồ muốn đổi',
-    offered_product_id INT INT NOT NULL COMMENT 'Món đồ bên gửi mang ra đổi',
-    requested_product_id INT INT NOT NULL COMMENT 'Món đồ của bên nhận muốn lấy',
+    offered_product_id INT NOT NULL COMMENT 'Món đồ bên gửi mang ra đổi',
+    requested_product_id INT NOT NULL COMMENT 'Món đồ của bên nhận muốn lấy',
     compensation_amount DECIMAL(10,2) DEFAULT 0.00 COMMENT 'Tiền/điểm bù thêm nếu lệch giá trị',
     status ENUM('pending', 'accepted', 'rejected', 'completed') DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -108,3 +108,30 @@ CREATE TABLE IF NOT EXISTS reviews (
     FOREIGN KEY (reviewer_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (reviewed_user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB;
+
+-- 9, 10. BẢNG MỞ RỘNG MODULE BACKEND BẢO
+-- Chạy MỘT LẦN trên database cs403 hiện có (KHÔNG import lại csdl.sql đầy đủ).
+
+CREATE TABLE IF NOT EXISTS wallet_transactions (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    actor_id INT NOT NULL,
+    change_amount INT NOT NULL,
+    balance_before INT NOT NULL,
+    balance_after INT NOT NULL,
+    note VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_wallet_user_date (user_id, created_at),
+    CONSTRAINT fk_wallet_user FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT fk_wallet_actor FOREIGN KEY(actor_id) REFERENCES users(id) ON DELETE CASCADE,
+    CONSTRAINT chk_wallet_change CHECK(change_amount <> 0)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS barter_confirmations (
+    barter_request_id INT PRIMARY KEY,
+    sender_confirmed TINYINT(1) NOT NULL DEFAULT 0,
+    receiver_confirmed TINYINT(1) NOT NULL DEFAULT 0,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    CONSTRAINT fk_barter_confirmation_request FOREIGN KEY (barter_request_id)
+    REFERENCES barter_requests(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

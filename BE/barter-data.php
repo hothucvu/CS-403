@@ -121,6 +121,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $barterError = 'Không thể cập nhật: yêu cầu đã được xử lý hoặc không thuộc về bạn.';
             }
         }
+    } elseif ($action === 'confirm') {
+        require __DIR__ . '/barter-finalize.php';
     } else {
         $barterError = 'Thao tác không hợp lệ.';
     }
@@ -148,12 +150,14 @@ $stmt->close();
 // Danh sach de nghi: khong tu do thay doi chu so huu qua du lieu POST.
 $sql = "SELECT b.id, b.status, b.created_at, b.compensation_amount,
                o.title AS offered_title, r.title AS requested_title,
-               sender.fullname AS sender_name, receiver.fullname AS receiver_name
+               sender.fullname AS sender_name, receiver.fullname AS receiver_name,
+               COALESCE(bc.sender_confirmed,0) AS sender_confirmed, COALESCE(bc.receiver_confirmed,0) AS receiver_confirmed
         FROM barter_requests b
         JOIN products o ON o.id = b.offered_product_id
         JOIN products r ON r.id = b.requested_product_id
         JOIN users sender ON sender.id = b.sender_id
         JOIN users receiver ON receiver.id = b.receiver_id
+        LEFT JOIN barter_confirmations bc ON bc.barter_request_id=b.id
         WHERE b.receiver_id = ? ORDER BY b.created_at DESC, b.id DESC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param('i', $userId);

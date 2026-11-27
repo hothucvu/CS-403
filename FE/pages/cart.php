@@ -57,7 +57,8 @@
                 <h2>Tổng kết giỏ hàng</h2>
                 <div class="cart-summary-line"><span>Số sản phẩm</span><strong><?php echo count($cartItems); ?></strong></div>
                 <div class="cart-summary-line cart-summary-total"><span>Tổng tiền</span><strong><?php echo number_format($cartTotal, 0, ',', '.'); ?> đ</strong></div>
-                <p class="cart-muted">Chức năng thanh toán sẽ tích hợp với phần Checkout của nhóm.</p>
+                <a class="cart-primary" href="layout.php?page=checkout">Tiến hành đặt hàng</a>
+                <p class="cart-muted">Đơn hàng demo, thanh toán COD khi nhận hàng.</p>
                 <a class="cart-back" href="layout.php?page=home">Tiếp tục mua sắm</a>
             </aside>
         </div>

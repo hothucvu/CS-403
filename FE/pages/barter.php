@@ -52,7 +52,7 @@ $statusLabels = [
                 <button type="submit" class="barter-btn">Gửi đề xuất trao đổi</button>
             </form>
         <?php endif; ?>
-        <p class="barter-hint">Chức năng này chỉ tạo yêu cầu. Đồng ý chưa đồng nghĩa đã chuyển quyền sở hữu hoặc hoàn tất thanh toán.</p>
+        <p class="barter-hint">Sau khi đồng ý, cả hai người cần xác nhận đã bàn giao. Hệ thống mới đánh dấu hoàn tất và cập nhật quyền sở hữu. Không hỗ trợ bù tiền/điểm ở bản demo.</p>
     </div>
 
     <div class="barter-cols">
@@ -79,6 +79,16 @@ $statusLabels = [
                                 </form>
                             </div>
                         <?php endif; ?>
+                        <?php if ($request['status'] === 'accepted'): ?>
+                            <p class="barter-hint"><?=((int)$request['sender_confirmed'])?'Người gửi đã xác nhận. ':'Chờ người gửi xác nhận. '?><?=((int)$request['receiver_confirmed'])?'Người nhận đã xác nhận.':'Chờ người nhận xác nhận.'?></p>
+                            <?php if (!(int)$request['receiver_confirmed']): ?>
+                              <form method="post" action="layout.php?page=barter">
+                                <input type="hidden" name="csrf_token" value="<?=e($_SESSION['csrf_token'])?>">
+                                <input type="hidden" name="request_id" value="<?=(int)$request['id']?>">
+                                <button type="submit" class="barter-btn" name="barter_action" value="confirm">Tôi đã bàn giao đồ</button>
+                              </form>
+                            <?php endif; ?>
+                        <?php endif; ?>
                     </article>
                 <?php endforeach; ?>
             <?php endif; ?>
@@ -92,6 +102,16 @@ $statusLabels = [
                     <article class="barter-request">
                         <p>Bạn đề xuất đổi <strong><?php echo e($request['offered_title']); ?></strong> lấy <strong><?php echo e($request['requested_title']); ?></strong> của <?php echo e($request['receiver_name']); ?>.</p>
                         <span class="barter-status"><?php echo e($statusLabels[$request['status']] ?? $request['status']); ?></span>
+                        <?php if ($request['status'] === 'accepted'): ?>
+                            <p class="barter-hint"><?=((int)$request['sender_confirmed'])?'Bạn đã xác nhận.':'Bạn chưa xác nhận.'?> <?=((int)$request['receiver_confirmed'])?'Người nhận đã xác nhận.':'Chờ người nhận xác nhận.'?></p>
+                            <?php if (!(int)$request['sender_confirmed']): ?>
+                              <form method="post" action="layout.php?page=barter">
+                                <input type="hidden" name="csrf_token" value="<?=e($_SESSION['csrf_token'])?>">
+                                <input type="hidden" name="request_id" value="<?=(int)$request['id']?>">
+                                <button type="submit" class="barter-btn" name="barter_action" value="confirm">Tôi đã bàn giao đồ</button>
+                              </form>
+                            <?php endif; ?>
+                        <?php endif; ?>
                     </article>
                 <?php endforeach; ?>
             <?php endif; ?>

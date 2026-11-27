@@ -1,0 +1,6 @@
+<?php $flash=bao_pull_flash(); ?>
+<link rel="stylesheet" href="./assets/css/bao.css"><section class="bao-page"><div class="bao-page-heading"><div><p class="bao-eyebrow">REUSE / BARTER TOKEN</p><h1>Ví điểm của tôi</h1><p>Điểm quy đổi nội bộ dùng cho mô phỏng đồ án, không phải tiền thật.</p></div></div>
+<?php if($flash):?><p class="bao-alert"><?=e($flash['message'])?></p><?php endif;?><?php if($walletError):?><p class="bao-alert bao-error"><?=e($walletError)?></p><?php endif; ?>
+<div class="bao-panel"><p class="bao-eyebrow">SỐ DƯ HIỆN TẠI</p><h2 class="bao-large-number"><?=number_format($walletBalance,0,',','.')?> điểm</h2><p class="bao-muted">Chưa tích hợp quy đổi/chi trả tiền thực tế.</p></div>
+<div class="bao-panel"><h2>Lịch sử thay đổi điểm</h2><div class="bao-table-wrap"><table class="bao-table"><thead><tr><th>Ngày</th><th>Biến động</th><th>Số dư</th><th>Ghi chú</th></tr></thead><tbody>
+<?php foreach($walletRows as $row):?><tr><td><?=e($row['created_at'])?></td><td><?=((int)$row['change_amount']>0?'+':'').(int)$row['change_amount']?></td><td><?=(int)$row['balance_after']?></td><td><?=e($row['note'])?></td></tr><?php endforeach;?></tbody></table></div><?php if(!$walletRows):?><p>Chưa có giao dịch điểm.</p><?php endif;?></div></section>

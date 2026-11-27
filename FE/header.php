@@ -72,10 +72,15 @@
                     Đăng bán
                 </a>
 
-                <a href="#"
-                   class="nav-link">
-                    Tài khoản
-                </a>
+                <a href="layout.php?page=my-products" class="nav-link">Tin của tôi</a>
+                <a href="layout.php?page=my-orders" class="nav-link">Đơn mua</a>
+                <a href="layout.php?page=wallet" class="nav-link">Ví điểm</a>
+                <a href="layout.php?page=profile" class="nav-link">Tài khoản</a>
+                <?php if (($_SESSION['role'] ?? '') === 'admin'): ?>
+                    <a href="layout.php?page=admin-products" class="nav-link">Admin sản phẩm</a>
+                    <a href="layout.php?page=admin-orders" class="nav-link">Admin đơn</a>
+                    <a href="layout.php?page=admin-wallet" class="nav-link">Admin điểm</a>
+                <?php endif; ?>
 
                 <!-- Dang xuat -->
                 <form action="../BE/logout-data.php"

@@ -1,0 +1,21 @@
+.detail-back { display: inline-block; margin: 7px 0 22px; color: #16834a; font-weight: 700; text-decoration: none; }
+.detail-wrap { background: white; border-radius: 20px; border: 1px solid #e0ebe4; padding: 26px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 36px; align-items: start; }
+.detail-media { background: #f6faf7; border-radius: 16px; overflow: hidden; min-height: 330px; display: grid; place-items: center; }
+.detail-media img { max-width: 100%; height: 360px; object-fit: contain; padding: 15px; }
+.detail-category { color: #16834a; font-weight: 750; font-size: 12px; background: #e8f5eb; border-radius: 999px; padding: 6px 11px; }
+.detail-info h1 { font-size: clamp(25px,3vw,35px); margin: 17px 0 8px; color: #243d2c; }
+.detail-price { color: #1762d7; font-size: 30px; margin: 5px 0 26px; font-weight: 850; }
+.detail-meta { display: grid; gap: 0; margin: 0 0 25px; }
+.detail-meta > div { display: flex; justify-content: space-between; gap: 22px; padding: 11px 0; border-bottom: 1px solid #edf2ee; }
+.detail-meta dt { color: #6e8273; }
+.detail-meta dd { text-align: right; font-weight: 700; margin: 0; color: #36533d; }
+.detail-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.detail-actions form { display: flex; }
+.detail-btn { display: inline-block; border: 1px solid #16834a; border-radius: 10px; background: #16834a; color: #fff; font: inherit; font-weight: 750; padding: 12px 18px; text-decoration: none; cursor: pointer; }
+.detail-outline { background: #fff; color: #16834a; }
+.detail-description { background: #fff; margin-top: 21px; border: 1px solid #e0ebe4; padding: 25px; border-radius: 16px; }
+.detail-description h2 { font-size: 21px; margin-top: 0; }
+.detail-description p { color: #587260; line-height: 1.8; overflow-wrap: anywhere; }
+.detail-empty { margin: 25px auto; background: #fff; border-radius: 16px; padding: 40px; text-align: center; }
+.detail-empty a { color: #16834a; }
+@media(max-width:800px){ .detail-wrap { grid-template-columns: 1fr; padding: 18px; gap: 22px; } .detail-media img { height: 260px; } }
