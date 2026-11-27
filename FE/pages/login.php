@@ -1,63 +1,48 @@
+
 <?php
-require_once __DIR__ . '/../../BE/db.php';
-
-if (isset($_SESSION['user_id'])) {
-    header('Location: ' . page_url('home'));
-    exit();
-}
-
-$email = '';
-$error = '';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = trim($_POST['email'] ?? '');
-    $password = $_POST['password'] ?? '';
-
-    if ($email === '' || $password === '') {
-        $error = 'Vui lòng nhập email và mật khẩu.';
-    } else {
-        $stmt = $conn->prepare('SELECT id, fullname, password, role FROM users WHERE email = ? LIMIT 1');
-        $stmt->bind_param('s', $email);
-        $stmt->execute();
-        $user = $stmt->get_result()->fetch_assoc();
-        $stmt->close();
-
-        if ($user && password_verify($password, $user['password'])) {
-            session_regenerate_id(true);
-            $_SESSION['user_id'] = (int)$user['id'];
-            $_SESSION['fullname'] = $user['fullname'];
-            $_SESSION['role'] = $user['role'];
-            header('Location: ' . page_url('home'));
-            exit();
-        }
-        $error = 'Email hoặc mật khẩu không đúng.';
-    }
-}
-
-$registered = isset($_GET['registered']);
+require_once __DIR__ . '/../../BE/login-data.php';
 ?>
 
 <link rel="stylesheet" href="./assets/css/auth.css">
 
-<section class="auth-card">
-    <h1>Đăng nhập</h1>
+<div class="auth-container">
+    <h2>Đăng nhập SmartTrade</h2>
 
-    <?php if ($registered && $error === ''): ?>
-        <p class="auth-alert auth-success">Đăng ký thành công. Hãy đăng nhập.</p>
+    <?php if ($statusMessage !== ''): ?>
+        <p class="<?php echo $isError ? 'error' : 'success'; ?>">
+            <?php echo htmlspecialchars($statusMessage, ENT_QUOTES, 'UTF-8'); ?>
+        </p>
     <?php endif; ?>
-    <?php if ($error !== ''): ?>
-        <p class="auth-alert auth-error"><?php echo e($error); ?></p>
+
+    <?php if ($loginSuccess): ?>
+        <p>Đăng nhập thành công!</p>
+        <a href="layout.php?page=home">Về trang chủ</a>
+    <?php else: ?>
+
+        <form method="POST" action="layout.php?page=login">
+
+            <input type="hidden"
+                   name="csrf_token"
+                   value="<?php echo htmlspecialchars($_SESSION['csrf_token'] ?? '', ENT_QUOTES, 'UTF-8'); ?>">
+
+            <label>Email</label>
+            <input type="email"
+                   name="email" 
+                   placeholder="Nhập email"
+                   required>
+
+            <label>Mật khẩu</label>
+            <input type="password"
+                   name="password"
+                   placeholder="Nhập mật khẩu"
+                   required>
+
+            <button type="submit">Đăng nhập</button>
+        </form>
+
+        <p>Chưa có tài khoản?
+            <a href="layout.php?page=register">Đăng ký ngay</a>
+        </p>
+
     <?php endif; ?>
-
-    <form method="POST" action="<?php echo e(page_url('login')); ?>" class="auth-form">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" value="<?php echo e($email); ?>" required>
-
-        <label for="password">Mật khẩu</label>
-        <input type="password" id="password" name="password" required>
-
-        <button type="submit" class="auth-submit">Đăng nhập</button>
-    </form>
-
-    <p class="auth-note">Chưa có tài khoản? <a href="<?php echo e(page_url('register')); ?>">Đăng ký</a></p>
-</section>
+</div>

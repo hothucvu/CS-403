@@ -69,3 +69,25 @@
 .status-error {
     color: #dc2626;
 }
+
+.btn-add-cart {
+    display: block;
+    width: 100%;
+    margin-top: 15px;
+    padding: 12px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background 0.2s;
+}
+
+.btn-add-cart:hover {
+    background: #1d4ed8;
+}

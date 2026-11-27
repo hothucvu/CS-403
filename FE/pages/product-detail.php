@@ -38,7 +38,7 @@ $typeLabels = ['sell' => 'Bán', 'barter' => 'Trao đổi', 'both' => 'Bán ho�
     
     <section class="detail-wrap">
         <div class="detail-image">
-            <img src="<?php echo "./assets/images/" . $product['image_url']; ?>" alt="<?php echo e($product['title']); ?>">
+            <img src="<?php echo "./assets/image/" . $product['image_url']; ?>" alt="<?php echo e($product['title']); ?>">
         </div>
 
         <div class="detail-info">

@@ -1,3 +1,4 @@
+
 <?php
 require_once __DIR__ . '/../../BE/home-data.php';
 ?>
@@ -35,20 +36,15 @@ require_once __DIR__ . '/../../BE/home-data.php';
                 <?php
                 $detailUrl = e(page_url('product-detail', ['id' => $product['id']]));
                 ?>
+
                 <article class="product-card">
-                    <a href="<?php echo $detailUrl; ?>">
-                        <img
-                            src="<?php echo "./assets/images/" . $product['image_url']; ?>"
-                            alt="<?php echo htmlspecialchars($product['title']); ?>"
-                            class="product-image"
-                        >
-                    </a>
+                    <img
+                        src="<?php echo "./assets/image/" . $product['image_url']; ?>"
+                        alt="<?php echo htmlspecialchars($product['title']); ?>"
+                        class="product-image"
+                    >
                     <div class="product-body">
-                        <h2 class="product-title">
-                            <a href="<?php echo $detailUrl; ?>">
-                                <?php echo htmlspecialchars($product['title']); ?>
-                            </a>
-                        </h2>
+                        <h2 class="product-title"><?php echo htmlspecialchars($product['title']); ?></h2>
                         <p class="product-price"><?php echo number_format((float)$product['price'], 0, ',', '.'); ?> đ</p>
                         <p class="product-desc"><?php echo htmlspecialchars($product['description'] ?? ''); ?></p>
                     </div>
