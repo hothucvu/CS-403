@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Demo Auto-Tagging – Nhóm 2</title>
+<style>
+  :root { --bg:#f5f6fa; --card:#fff; --text:#1f2430; --muted:#6b7280; --main:#2f7d5b; --line:#e3e6ee; --chip:#e5f4ec; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#14171f; --card:#1d212b; --text:#e8eaf0; --muted:#9aa3b5; --main:#4cb58a; --line:#2c3240; --chip:#1f3a2f; }
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui,"Segoe UI",Arial,sans-serif; background:var(--bg); color:var(--text); }
+  .wrap { max-width:900px; margin:32px auto; padding:0 16px; }
+  h1 { font-size:22px; margin:0 0 4px; }
+  p.sub { color:var(--muted); margin:0 0 20px; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:700px){ .grid{ grid-template-columns:1fr; } }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; }
+  .drop { border:2px dashed var(--line); border-radius:10px; min-height:260px; display:flex; align-items:center;
+          justify-content:center; text-align:center; color:var(--muted); cursor:pointer; overflow:hidden; }
+  .drop img { max-width:100%; max-height:320px; display:block; }
+  button { margin-top:12px; width:100%; padding:11px; border:0; border-radius:8px; background:var(--main);
+           color:#fff; font-size:15px; cursor:pointer; }
+  button:disabled { opacity:.5; cursor:not-allowed; }
+  label { display:block; font-size:12px; color:var(--muted); margin:12px 0 4px; }
+  .field { padding:9px 11px; border:1px solid var(--line); border-radius:8px; min-height:38px; }
+  .chips { display:flex; flex-wrap:wrap; gap:6px; min-height:38px; }
+  .chip { background:var(--chip); color:var(--main); padding:5px 11px; border-radius:999px; font-size:13px; }
+  #status { margin-top:10px; font-size:14px; color:var(--muted); }
+  #status.err { color:#c0392b; }
+  .bar { height:8px; background:var(--line); border-radius:99px; overflow:hidden; }
+  .bar span { display:block; height:100%; width:0; background:var(--main); transition:width .4s; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Demo Auto-Tagging (Nhóm 2)</h1>
+  <p class="sub">Chọn ảnh món đồ cũ, AI sẽ gợi ý tiêu đề, danh mục và thẻ tag.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="drop" id="drop">Bấm để chọn ảnh (JPG, PNG, WEBP – tối đa 5MB)</div>
+      <input type="file" id="file" accept="image/jpeg,image/png,image/webp" hidden>
+      <button id="go" disabled>Phân tích ảnh bằng AI</button>
+      <div id="status"></div>
+    </div>
+
+    <div class="card">
+      <label>Tiêu đề gợi ý</label><div class="field" id="title">—</div>
+      <label>Danh mục</label><div class="field" id="category">—</div>
+      <label>Thẻ tag</label><div class="chips" id="tags"><span class="field" style="border:0;padding:0">—</span></div>
+      <label>Thương hiệu</label><div class="field" id="brand">—</div>
+      <label>Tình trạng nhìn thấy</label><div class="field" id="cond">—</div>
+      <label>Độ tin cậy <span id="confText"></span></label><div class="bar"><span id="conf"></span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Danh mục giống file AI/seed_categories.sql (id 1..8). Khi chạy thật, BE/ai-autotag.php lấy từ DB.
+const CATEGORIES = [
+  {id:1,name:"Đồ điện tử"},{id:2,name:"Thời trang"},{id:3,name:"Đồ gia dụng"},{id:4,name:"Nội thất"},
+  {id:5,name:"Sách & Văn phòng"},{id:6,name:"Xe cộ"},{id:7,name:"Thể thao & Giải trí"},{id:8,name:"Khác"}
+];
+const $ = id => document.getElementById(id);
+let chosen = null;
+
+$("drop").onclick = () => $("file").click();
+$("file").onchange = e => {
+  chosen = e.target.files[0] || null;
+  if (!chosen) return;
+  const img = document.createElement("img");
+  img.src = URL.createObjectURL(chosen);
+  $("drop").replaceChildren(img);
+  $("go").disabled = false;
+  setStatus("");
+};
+
+function setStatus(msg, err){ $("status").textContent = msg; $("status").className = err ? "err" : ""; }
+
+function show(d){
+  $("title").textContent = d.title || "—";
+  $("category").textContent = d.category && d.category.name ? d.category.name : "—";
+  $("brand").textContent = d.brand || "—";
+  $("cond").textContent = d.condition_hint || "—";
+  const pct = Math.round((d.confidence || 0) * 100);
+  $("conf").style.width = pct + "%";
+  $("confText").textContent = "(" + pct + "%)";
+  const box = $("tags"); box.replaceChildren();
+  (d.suggested_tags || []).forEach(t => { const s = document.createElement("span"); s.className="chip"; s.textContent=t; box.appendChild(s); });
+  if (!box.children.length) box.textContent = "AI chưa nhận ra món đồ trong ảnh";
+}
+
+$("go").onclick = async () => {
+  if (!chosen) return;
+  const fd = new FormData();
+  fd.append("image", chosen);
+  fd.append("categories", JSON.stringify(CATEGORIES));
+  $("go").disabled = true;
+  setStatus("AI đang nhận diện ảnh, chờ vài giây...");
+  const t0 = performance.now();
+  try {
+    const res = await fetch("/api/auto-tag", { method:"POST", body:fd });
+    const data = await res.json();
+    if (!res.ok || data.status !== "success") throw new Error(data.error || "Không nhận diện được ảnh");
+    show(data);
+    setStatus("Xong trong " + ((performance.now()-t0)/1000).toFixed(1) + " giây" + (data.mock ? " (dữ liệu giả lập)" : ""));
+  } catch (err) {
+    setStatus(err.message, true);
+  } finally {
+    $("go").disabled = false;
+  }
+};
+</script>
+</body>
+</html>

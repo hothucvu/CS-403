@@ -1,0 +1,16 @@
+{
+  "title": "Tủ gỗ đựng đồ nhiều ngăn cũ",
+  "category_id": 4,
+  "category_name": "Nội thất",
+  "tags": [
+    "tủ gỗ",
+    "tủ nhiều ngăn",
+    "tủ đựng đồ",
+    "nội thất cũ",
+    "màu vàng gỗ",
+    "gỗ"
+  ],
+  "brand": "",
+  "condition_hint": "Tủ còn khá chắc chắn, một số ngăn kéo đã mở sẵn, ngoại hình còn tương đối tốt",
+  "confidence": 0.95
+}

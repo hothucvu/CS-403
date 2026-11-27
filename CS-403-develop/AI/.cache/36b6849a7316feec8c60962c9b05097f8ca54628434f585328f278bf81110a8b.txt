@@ -1,0 +1,15 @@
+{
+  "title": "Tủ lạnh cũ rỉ sét",
+  "category_id": 3,
+  "category_name": "Đồ gia dụng",
+  "tags": [
+    "tủ lạnh",
+    "đồ gia dụng",
+    "cũ",
+    "trắng",
+    "kim loại"
+  ],
+  "brand": "",
+  "condition_hint": "Tủ lạnh cũ, vỏ ngoài bị rỉ sét nhiều",
+  "confidence": 0.95
+}

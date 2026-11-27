@@ -1,0 +1,16 @@
+{
+  "title": "Xe ô tô Bentley sang trọng",
+  "category_id": 6,
+  "category_name": "Xe cộ",
+  "tags": [
+    "xe ô tô",
+    "Bentley",
+    "xe sang",
+    "màu cam",
+    "màu đen",
+    "mui trần"
+  ],
+  "brand": "Bentley",
+  "condition_hint": "Xe mới, sáng bóng",
+  "confidence": 0.95
+}

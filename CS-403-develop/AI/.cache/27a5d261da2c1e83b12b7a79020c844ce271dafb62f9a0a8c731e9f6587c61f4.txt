@@ -1,0 +1,15 @@
+{
+  "title": "Bikini hai mảnh họa tiết quả cherry",
+  "category_id": 2,
+  "category_name": "Thời trang",
+  "tags": [
+    "bikini",
+    "đồ bơi",
+    "hồng",
+    "họa tiết cherry",
+    "hai mảnh"
+  ],
+  "brand": "",
+  "condition_hint": "Sản phẩm còn mới, mặc tốt",
+  "confidence": 0.9
+}

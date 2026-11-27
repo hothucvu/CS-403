@@ -1,0 +1,16 @@
+{
+  "title": "MacBook Air/Pro màu hồng cũ",
+  "category_id": 1,
+  "category_name": "Đồ điện tử",
+  "tags": [
+    "laptop",
+    "apple",
+    "macbook",
+    "màu hồng",
+    "đồ điện tử",
+    "máy tính xách tay"
+  ],
+  "brand": "Apple",
+  "condition_hint": "Tình trạng tốt, ngoại hình nguyên vẹn trưng bày tại cửa hàng",
+  "confidence": 0.95
+}
